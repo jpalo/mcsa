@@ -1,0 +1,18 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<WixLocalization Culture="en-us" xmlns="http://schemas.microsoft.com/wix/2006/localization">
+
+	<String Id="LaunchCondition_AdminPrivs">You must have Administrative rights on this machine to install [ProductName].</String>
+	<String Id="LaunchCondition_LaterVersion">A later version of [ProductName] is already installed.</String>
+  <String Id="LaunchCondition_WrongOSVersion">[ProductName] can only be installed on Microsoft Windows Vista or newer with Media Center.</String>
+  <String Id="LaunchCondition_WrongProcessor">This [ProductName] Setup is only for x64 systems. Please use x86 version of the Setup.</String>
+
+	<String Id="Property_ArpHelpLink">http://www.jussipalo.com/fbmce</String>
+	<String Id="Property_ArpUrlInfoAbout">http://www.jussipalo.com/fbmce</String>
+	<String Id="Property_ProductLanguage">1033</String>
+	<String Id="Property_ProductName">Media Center Status Application x64</String>
+	<String Id="Property_CompanyName">Hamar Data</String>
+
+	<String Id="Package_Description">Media Center Status Application x64</String>
+	<String Id="Package_Comments">This Installer database contains the logic and data required to install Media Center Status Application x64.</String>
+
+</WixLocalization>

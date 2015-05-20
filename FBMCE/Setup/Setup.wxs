@@ -1,0 +1,414 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+
+<!-- These variables define the Windows Installer product version, product code and upgrade code. They   -->
+<!-- will be used later on in this file.                                                                 -->
+<?define Property_ProductVersion = "0.6.8.0" ?>
+
+<!-- http://msdn.microsoft.com/en-us/library/aa367850(VS.85).aspx -->
+<?define Property_ProductCode = "9AE37E76-4FCC-4c68-8FD4-FCA4953B1B8B" ?>
+
+<!-- Across different versions of the same product, you may never need to change the UpgradeCode. -->
+<!-- Each stand-alone product should have its own UpgradeCode. A product suite should also have its own UpgradeCode. -->
+<!-- Doing so will allow the suite to upgrade previous versions of the suite or stand-alone products by using multiple rows in the Upgrade table.  -->
+<?define Property_UpgradeCode = "D5C0F6AE-FF0B-4ec3-809E-CB4D20CFEC90" ?>
+
+<Wix xmlns="http://schemas.microsoft.com/wix/2006/wi">
+  <Product Id="$(var.Property_ProductCode)" UpgradeCode="$(var.Property_UpgradeCode)" Name="!(loc.Property_ProductName)" Language="!(loc.Property_ProductLanguage)" Version="$(var.Property_ProductVersion)" Manufacturer="!(loc.Property_CompanyName)">
+
+    <Package Description="!(loc.Package_Description)" Comments="!(loc.Package_Comments)" InstallerVersion="200" Compressed="yes" Platform="x86" />
+
+    <!-- This information enables Windows Installer major upgrade functionality so users can seamlessly  -->
+    <!-- install a new version of the product and have the old version automatically uninstall behind    -->
+    <!-- the scenes. See the following topic in the MSDN Library for additional information:             -->
+    <!-- http://msdn.microsoft.com/library/default.asp?url=/library/en-us/msi/setup/major_upgrades.asp   -->
+    <Upgrade Id="$(var.Property_UpgradeCode)">
+      <UpgradeVersion Minimum="$(var.Property_ProductVersion)" OnlyDetect="no" Property="NEWERVERSIONDETECTED" />
+      <UpgradeVersion Minimum="0.2.0.0" IncludeMinimum="yes" Maximum="$(var.Property_ProductVersion)" IncludeMaximum="no" Property="OLDERVERSIONBEINGUPGRADED" />
+    </Upgrade>
+
+    <!-- This custom action prevents users from installing if a newer version of this product is already -->
+    <!-- installed on the system. This is a part of Windows Installer major upgrade functionality.       -->
+    <CustomAction Id="CA_BlockOlderVersionInstall" Error="!(loc.LaunchCondition_LaterVersion)" />
+
+    <!-- This custom action prevents users from installing this product on unsupported operating system  -->
+    <!-- versions. The conditions that are checked for operating system version are defined below.       -->
+    <CustomAction Id="CA_ErrWrongWindowsVersion" Error="!(loc.LaunchCondition_WrongOSVersion)" />
+
+    <!-- This condition adds an item to the LaunchCondition table of the MSI to block a user from        -->
+    <!-- installing this product unless they have administrative privileges on the system.               -->
+    <Condition Message="!(loc.LaunchCondition_AdminPrivs)">
+      <![CDATA[Privileged]]>
+    </Condition>
+
+    <!-- This condition adds an item to the LaunchCondition table of the MSI to block a user from        -->
+    <!-- installing this product on x64 systems.                                                         -->
+    <Condition Message="!(loc.LaunchCondition_WrongProcessor)">
+      <![CDATA[Not VersionNT64]]>
+    </Condition>
+
+    <!-- This is a list of directories that are used by this product as installation locations or custom -->
+    <!-- action file search locations.                                                                   -->
+    <Directory Id="TARGETDIR" Name="SourceDir">
+      <Directory Id="WindowsFolder" Name="WINDOWS">
+        <Directory Id="EhomeFolder" Name="eHome"/>
+      </Directory>
+      <Directory Id="ProgramFilesFolder" Name="Program Files">
+        <Directory Id="HamarData" Name="Hamar Data">
+          <Directory Id="APPROOTDIRECTORY" Name="FBMCE"/>
+          <Directory Id="GAC" Name="GAC"/>
+        </Directory>
+      </Directory>
+      <Directory Id="ProgramMenuFolder" Name="Programs">
+        <Directory Id="ProgramMenuDir" Name="Media Center Status Application" />
+      </Directory>
+    </Directory>
+
+    <!-- This is a list of all components installed as a part of this product. A component is the        -->
+    <!-- smallest atomic unit of installation in Windows Installer. Each component must have a unique    -->
+    <!-- GUID. In general, it is recommended that each file be installed by a separate component in      -->
+    <!-- order to avoid reference counting problems and make future servicing of this product easier.    -->
+    <!-- Each component is listed as a child of the DirectoryRef that represents the directory that      -->
+    <!-- the file it contains will install to.                                                           -->
+    <DirectoryRef Id="GAC">
+      <Component Id="GAC_FBMCE.dll" Guid="08d1c0af-0a5a-468c-bf08-70dc3dc2a348" >
+        <File Id="GAC_FBMCE.dll" Name="FBMCE.dll" KeyPath="yes" Source="..\bin\$(var.BuildType)\FBMCE.dll" Checksum="yes" Vital="yes" Assembly=".net"/>
+
+        <RegistryKey Action="createAndRemoveOnUninstall" Root="HKLM" Key="Software\Hamar Data\FBMCE">
+
+          <RegistryValue Action="write" Name="EventsEnabled_RecordedTV" Value="1" Type="string" />
+          <RegistryValue Action="write" Name="EventsEnabled_RecordingTV" Value="0" Type="string" />
+          <RegistryValue Action="write" Name="EventsEnabled_TV" Value="1" Type="string" />
+          <RegistryValue Action="write" Name="EventsEnabled_Video" Value="1" Type="string" />
+          <RegistryValue Action="write" Name="EventsEnabled_Pictures" Value="1" Type="string" />
+          <RegistryValue Action="write" Name="EventsEnabled_DVD" Value="1" Type="string" />
+          <RegistryValue Action="write" Name="EventsEnabled_Music" Value="1" Type="string" />
+
+          <RegistryValue Action="write" Name="ConfirmUpdate_Facebook" Value="0" Type="string" />
+          <RegistryValue Action="write" Name="ConfirmUpdate_Twitter" Value="0" Type="string" />
+
+          <RegistryValue Action="write" Name="EventsConfig_Music_AlbumMode" Value="1" Type="string" />
+          <RegistryValue Action="write" Name="EventsConfig_DVD_StatusString" Value="is watching %TITLE%" Type="string" />
+          <RegistryValue Action="write" Name="EventsConfig_Music_StatusString" Value="is listening to %TITLE%" Type="string" />
+          <RegistryValue Action="write" Name="EventsConfig_Pictures_StatusString" Value="is looking at pictures" Type="string" />
+          <RegistryValue Action="write" Name="EventsConfig_RecordedTV_StatusString" Value="is watching %TITLE%" Type="string" />
+          <RegistryValue Action="write" Name="EventsConfig_RecordingTV_StatusString" Value="is recording %TITLE%" Type="string" />
+          <RegistryValue Action="write" Name="EventsConfig_TV_StatusString" Value="is watching %TITLE%" Type="string" />
+          <RegistryValue Action="write" Name="EventsConfig_Video_StatusString" Value="is watching %TITLE%" Type="string" />
+
+          <RegistryValue Action="write" Name="EventsConfig_Music_QueryAmazon" Value="1" Type="string" />
+          <RegistryValue Action="write" Name="EventsConfig_DVD_QueryAmazon" Value="1" Type="string" />
+          <RegistryValue Action="write" Name="EventsConfig_Pictures_QueryAmazon" Value="0" Type="string" />
+          <RegistryValue Action="write" Name="EventsConfig_RecordedTV_QueryAmazon" Value="0" Type="string" />
+          <RegistryValue Action="write" Name="EventsConfig_RecordingTV_QueryAmazon" Value="0" Type="string" />
+          <RegistryValue Action="write" Name="EventsConfig_TV_QueryAmazon" Value="0" Type="string" />
+          <RegistryValue Action="write" Name="EventsConfig_Video_QueryAmazon" Value="1" Type="string" />
+
+          <RegistryValue Action="write" Name="Exclusion_RecordedTV_RegExp" Value="" Type="string" />
+          <RegistryValue Action="write" Name="Exclusion_RecordingTV_RegExp" Value="" Type="string" />
+          <RegistryValue Action="write" Name="Exclusion_TV_RegExp" Value="No data available" Type="string" />
+          <RegistryValue Action="write" Name="Exclusion_TV_Channels" Value="" Type="string" />
+          <RegistryValue Action="write" Name="Exclusion_Video_RegExp" Value="" Type="string" />
+          <RegistryValue Action="write" Name="Exclusion_Pictures_RegExp" Value="" Type="string" />
+          <RegistryValue Action="write" Name="Exclusion_DVD_RegExp" Value="" Type="string" />
+          <RegistryValue Action="write" Name="Exclusion_Music_RegExp" Value="" Type="string" />
+
+          <RegistryValue Action="write" Name="Debug" Value="0" Type="string" />
+          <RegistryValue Action="write" Name="PollingInterval" Value="10000" Type="string" />
+          <RegistryValue Action="write" Name="ClearStatusOnExit" Value="0" Type="string" />
+
+          <RegistryValue Action="write" Name="EventsEnabled_Service_Xml" Value="0" Type="string" />
+          <RegistryValue Action="write" Name="EventsEnabled_Service_Facebook" Value="1" Type="string" />
+          <RegistryValue Action="write" Name="EventsEnabled_Service_Jabber" Value="0" Type="string" />
+          <RegistryValue Action="write" Name="EventsEnabled_Service_Twitter" Value="1" Type="string" />
+          <RegistryValue Action="write" Name="EventsEnabled_Service_TwitterFriends" Value="1" Type="string" />
+
+          <RegistryValue Action="write" Name="Service_Xml_File" Value="status.xml" Type="string" />
+          <RegistryValue Action="write" Name="Service_Xml_ClearWhenNoMedia" Value="1" Type="string" />
+          <RegistryValue Action="write" Name="Service_Xml_ClearStatusOnExit" Value="1" Type="string" />
+
+          <RegistryValue Action="write" Name="Service_Xml_TimeEnabled" Value="" Type="string" />
+          <RegistryValue Action="write" Name="Service_Facebook_TimeEnabled" Value="" Type="string" />
+          <RegistryValue Action="write" Name="Service_Twitter_TimeEnabled" Value="" Type="string" />
+          <RegistryValue Action="write" Name="Service_Facebook_StreamEnabled" Value="1" Type="string" />
+          <RegistryValue Action="write" Name="Service_Facebook_StatusEnabled" Value="0" Type="string" />
+          <RegistryValue Action="write" Name="Service_All_AmazonLocaleUrl" Value="ecs.amazonaws.com" Type="string" />
+          <RegistryValue Action="write" Name="Service_Twitter_Friends" Value="" Type="string" />
+          <RegistryValue Action="write" Name="Service_Twitter_Friends_TimesPerHour" Value="12" Type="string" />
+          <RegistryValue Action="write" Name="Service_Twitter_EnableSuspend" Value="1" Type="string" />
+          <RegistryValue Action="write" Name="Service_Twitter_SuspendTime" Value="120" Type="string" />
+
+          <RegistryValue Action="write" Name="Service_Jabber_Server" Value="gmail.com" Type="string" />
+          <RegistryValue Action="write" Name="Service_Jabber_ConnectServer" Value="talk.google.com" Type="string" />
+        </RegistryKey>
+
+      </Component>
+      <Component Id="GAC_Facebook.dll" Guid="14037806-8D86-478f-9DB0-ED6BACE3E7F6">
+        <File Id="GAC_Facebook.dll" Name="Facebook.dll" KeyPath="yes" Source="..\bin\$(var.BuildType)\Facebook.dll" Vital="yes" Assembly=".net"/>
+      </Component>
+      <Component Id="GAC_CommonFunctions.dll" Guid="D2EB65A0-25C8-44ca-BB44-0E4506791A3B">
+        <File Id="GAC_CommonFunctions.dll" Name="CommonFunctions.dll" KeyPath="yes" Source="..\CommonFunctions\bin\$(var.BuildType)\CommonFunctions.dll" Vital="yes" Assembly=".net"/>
+      </Component>
+      <Component Id="GAC_Twitter.dll" Guid="A5780CBE-41AC-4dc4-BA57-E81396041942">
+        <File Id="GAC_Twitter.dll" Name="Twitter.dll" KeyPath="yes" Source="..\Twitter\bin\$(var.BuildType)\Twitter.dll" Vital="yes" Assembly=".net"/>
+      </Component>
+      <Component Id="GAC_MediaState.dll" Guid="EDB4BA4C-3BC6-4317-9A73-EC850332B097">
+        <File Id="GAC_MediaState.dll" Name="MediaState.dll" KeyPath="yes" Source="..\Binaries\MediaState.dll" Vital="yes" Assembly=".net"/>
+      </Component>
+      <Component Id="GAC_MemMapFile.dll" Guid="8F884F77-6279-4635-AC79-2946A553BC68">
+        <File Id="GAC_MemMapFile.dll" Name="MemMapFile.dll" KeyPath="yes" Source="..\Binaries\MemMapFile.dll" Vital="yes" Assembly=".net"/>
+      </Component>
+      <Component Id="GAC_Newtonsoft.Json.dll" Guid="15EC015A-A17D-4F31-A16E-A0A200837A38">
+        <File Id="GAC_Newtonsoft.Json.dll" Name="Newtonsoft.Json.dll" KeyPath="yes" Source="..\Binaries\Newtonsoft.Json.dll" Vital="yes" Assembly=".net"/>
+      </Component>
+    </DirectoryRef>
+
+    <DirectoryRef Id="APPROOTDIRECTORY">
+      <Component Id="FBMCE.dll" Guid="80FAB67A-105D-48bb-9BE0-3C59A4DB5124" >
+        <File Id="FBMCE.dll" Name="FBMCE.dll" Source="..\bin\$(var.BuildType)\FBMCE.dll" Checksum="yes" Vital="yes" />
+      </Component>
+      <Component Id="Registration.xml" Guid="d64772ce-ced4-49a6-872d-e82f21b3fccc">
+        <File Id="Registration.xml" Name="Registration.xml" Source="..\Registration.xml" Checksum="no" />
+      </Component>
+      <Component Id="ConfigTool.exe" Guid="4C3AFE3E-8F7A-4b12-8D0D-6D2497457F02">
+        <File Id="ConfigTool.exe" Name="ConfigTool.exe" KeyPath="yes" Source="..\FBMCE Configuration Tool\bin\$(var.BuildType)\ConfigTool.exe" Checksum="yes" >
+          <Shortcut Advertise="yes" Id="FBMCEShortcut" Directory="ProgramMenuDir" Name="Media Center Status Tool Configuration"
+                WorkingDirectory="INSTALLDIR" Description="Media Center Status Tool Configuration" Icon="ConfigTool.exe">
+            <Icon Id="ConfigTool.exe" SourceFile="..\..\FBMCE.ico" />
+          </Shortcut>
+        </File>
+        <RemoveFolder Id="DeleteShortcutFolder" Directory="ProgramMenuDir" On="uninstall" />
+      </Component>
+      <Component Id="Facebook.dll" Guid="212784ED-7D67-482d-91EA-17E41F0E767E">
+        <File Id="Facebook.dll" Name="Facebook.dll" Source="..\bin\$(var.BuildType)\Facebook.dll" Vital="yes"/>
+      </Component>
+      <Component Id="CommonFunctions.dll" Guid="F067A38C-FB19-4230-BC4C-9F78BB201224">
+        <File Id="CommonFunctions.dll" Name="CommonFunctions.dll" Source="..\CommonFunctions\bin\$(var.BuildType)\CommonFunctions.dll" Vital="yes"/>
+      </Component>
+      <Component Id="Twitter.dll" Guid="3FBE3381-AD96-4c83-A610-C47DDA911593">
+        <File Id="Twitter.dll" Name="Twitter.dll" Source="..\Twitter\bin\$(var.BuildType)\Twitter.dll" Vital="yes"/>
+      </Component>
+      <Component Id="MediaState.dll" Guid="03332AEE-CC61-48f2-9255-BBF012484049">
+        <File Id="MediaState.dll" Name="MediaState.dll" Source="..\Binaries\MediaState.dll" Vital="yes" />
+      </Component>
+      <Component Id="MemMapFile.dll" Guid="E45C6BAA-1049-41b5-A201-46264E1370E0">
+        <File Id="MemMapFile.dll" Name="MemMapFile.dll" Source="..\Binaries\MemMapFile.dll" Vital="yes" />
+      </Component>
+      <Component Id="MSASState.dll" Guid="181DF9A0-F0F5-4f4f-BECA-5C0364BEF751">
+        <File Id="MSASState.dll" Name="MSASState.dll" KeyPath="yes" Source="..\Binaries\MSASState.dll" Vital="yes"/>
+
+        <RegistryKey Action="createAndRemoveOnUninstall" Root="HKCR" Key="MSASState.MediaStatusSink">
+          <RegistryValue Action="write" Value="MSASState.MediaStatusSink" Type="string" />
+
+          <RegistryKey Action="createAndRemoveOnUninstall" Key="CLSID">
+            <RegistryValue Action="write" Value="{380AA9F1-5047-40D0-8BE9-18AB489CA469}" Type="string" />
+          </RegistryKey>
+        </RegistryKey>
+
+        <RegistryKey Action="createAndRemoveOnUninstall" Root="HKCR" Key="CLSID\{380AA9F1-5047-40D0-8BE9-18AB489CA469}">
+          <RegistryValue Action="write" Value="MSASState.MediaStatusSink" Type="string" />
+
+          <RegistryKey Action="createAndRemoveOnUninstall" Key="InprocServer32">
+            <RegistryValue Action="write" Value="mscoree.dll" Type="string" />
+            <RegistryValue Name="ThreadingModel" Action="write" Value="Both" Type="string" />
+            <RegistryValue Name="Class" Action="write" Value="MSASState.MediaStatusSink" Type="string" />
+            <RegistryValue Name="Assembly" Action="write" Value="MSASState, Version=6.0.6000.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35" Type="string" />
+            <RegistryValue Name="RuntimeVersion" Action="write" Value="v2.0.50727" Type="string" />
+            <RegistryValue Name="CodeBase" Action="write" Value="file:///C:/Program Files/Hamar Data/FBMCE/MSASState.DLL" Type="string" />
+          </RegistryKey>
+
+          <RegistryKey Action="createAndRemoveOnUninstall" Key="ProgId">
+            <RegistryValue Action="write" Value="MSASState.MediaStatusSink" Type="string" />
+          </RegistryKey>
+
+          <RegistryKey Action="createAndRemoveOnUninstall" Key="Implemented Categories\{62C8FE65-4EBB-45E7-B440-6E39B2CDBF29}" />
+
+          <RegistryKey Action="createAndRemoveOnUninstall" Key="Implemented Categories\{FCB0C2A3-9747-4c95-9d02-820AFEDEF13F}">
+            <RegistryValue Action="write" Value="Media Status Sink" Type="string" />
+          </RegistryKey>
+
+        </RegistryKey>
+      </Component>
+      <Component Id="Newtonsoft.Json.dll" Guid="C37B18BD-6FBE-4FB5-AC4F-0C36A498EC40">
+        <File Id="Newtonsoft.Json.dll" Name="Newtonsoft.Json.dll" Source="..\Binaries\Newtonsoft.Json.dll" Vital="yes" />
+      </Component>
+    </DirectoryRef>
+
+    <!-- This is a list of features that are installed as a part of this product. In this case, there is -->
+    <!-- only one feature. Each feature contains a list of components that it will install. Features can -->
+    <!-- can be displayed and allow user selection in setup UI if desired.                               -->
+    <Feature Id="APPROOTFEATURE" Title="FBMCE" Level="1">
+      <ComponentRef Id="FBMCE.dll" />
+      <ComponentRef Id="GAC_FBMCE.dll" />
+      <ComponentRef Id="Registration.xml" />
+      <ComponentRef Id="ConfigTool.exe" />
+
+      <ComponentRef Id="Facebook.dll" />
+      <ComponentRef Id="GAC_Facebook.dll" />
+
+      <ComponentRef Id="CommonFunctions.dll" />
+      <ComponentRef Id="GAC_CommonFunctions.dll" />
+
+      <ComponentRef Id="Twitter.dll" />
+      <ComponentRef Id="GAC_Twitter.dll" />
+
+      <ComponentRef Id="MediaState.dll" />
+      <ComponentRef Id="GAC_MediaState.dll" />
+
+      <ComponentRef Id="MemMapFile.dll" />
+      <ComponentRef Id="GAC_MemMapFile.dll" />
+
+      <ComponentRef Id="Newtonsoft.Json.dll" />
+      <ComponentRef Id="GAC_Newtonsoft.Json.dll" />
+      
+      <ComponentRef Id="MSASState.dll" />
+    </Feature>
+
+    <!-- The media table defines the location that the MSI will look to find source files during         -->
+    <!-- installation or repair scenarios. In this case, the source files are in a cab file that will be -->
+    <!-- embedded directly into the MSI at build time.                                                   -->
+    <Media Id="1" Cabinet="Application.cab" EmbedCab="yes" />
+
+    <!-- These custom actions are used to register the application with Media Center using the utility   -->
+    <!-- RegisterMceApp.exe that is installed as a part of the Windows Media Center feature. Each custom -->
+    <!-- action is defined as a pair in order to leverage the WiX QtExec custom action to suppress the   -->
+    <!-- pop-up UI that would ordinarily appear when running RegisterMceApp.exe. Registering a Windows   -->
+    <!-- Media Center application will fail if it is already registered, so this setup will first        -->
+    <!-- unregister the application and then attempt to re-register it. This setup ignores the return    -->
+    <!-- code from the unregistration custom action but checks the return code of the registration       -->
+    <!-- action. If registration fails, setup will fail and roll back. These custom actions use the      -->
+    <!-- REGISTERMCEAPP property that is defined below in order to find the exact location of the file   -->
+    <!-- RegisterMceApp.exe on the system.                                                               -->
+    <CustomAction Id="CA_RegisterMceApp_Unregister_Install_Cmd" Property="CA_RegisterMceApp_Unregister_Install" Value="&quot;[REGISTERMCEAPP]&quot; /u /allusers &quot;[#Registration.xml]&quot;"/>
+    <CustomAction Id="CA_RegisterMceApp_Unregister_Uninstall_Cmd" Property="CA_RegisterMceApp_Unregister_Uninstall" Value="&quot;[REGISTERMCEAPP]&quot; /u /allusers &quot;[#Registration.xml]&quot;"/>
+    <CustomAction Id="CA_RegisterMceApp_Register_Cmd" Property="CA_RegisterMceApp_Register" Value="&quot;[REGISTERMCEAPP]&quot; /allusers &quot;[#Registration.xml]&quot;"/>
+    <CustomAction Id="CA_RegisterMceApp_Rollback_Cmd" Property="CA_RegisterMceApp_Rollback" Value="&quot;[REGISTERMCEAPP]&quot; /u /allusers &quot;[#Registration.xml]&quot;"/>
+
+    <CustomAction Id="CA_RegisterMceApp_Unregister_Install" BinaryKey="WixCA" DllEntry="CAQuietExec" Execute="deferred" Return="ignore" Impersonate="no"/>
+    <CustomAction Id="CA_RegisterMceApp_Unregister_Uninstall" BinaryKey="WixCA" DllEntry="CAQuietExec" Execute="deferred" Return="ignore" Impersonate="no"/>
+    <CustomAction Id="CA_RegisterMceApp_Register" BinaryKey="WixCA" DllEntry="CAQuietExec" Execute="deferred" Return="check" Impersonate="no"/>
+    <CustomAction Id="CA_RegisterMceApp_Rollback" BinaryKey="WixCA" DllEntry="CAQuietExec" Execute="rollback" Return="ignore" Impersonate="no"/>
+
+    <!-- The InstallExecuteSequence table describes the order that actions will be executed during       -->
+    <!-- installation, repair and uninstall of this product.                                             -->
+    <InstallExecuteSequence>
+      <Custom Action="CA_BlockOlderVersionInstall" After="FindRelatedProducts">
+        <![CDATA[NEWERVERSIONDETECTED]]>
+      </Custom>
+      <RemoveExistingProducts After="InstallFinalize" />
+      <LaunchConditions After="AppSearch"/>
+
+      <ScheduleReboot After="InstallFinalize" />
+
+      <!--
+         * NOT VersionNT >= 600 - This condition will cause the MSI to only block on any version of Windows prior to Vista.  
+            It will no longer block on any potential future versions of Windows with a VersionNT value greater than 600.
+         * NOT MCEINSTALLVERSION - This condition will cause the MSI to only block if the Ident registry value does not exist, 
+            but will not check the exact Ident version value.  It will no longer block on any potential future version of Windows 
+            Media Center with an Ident value not equal to 5.0.  It could also theoretically run on an older version of Windows 
+            Media Center, but you should be protected by the VersionNT check in that case to avoid the MSI running on Windows 
+            XP Media Center Edition for example.  I chose not to put a greater than or equal check here because the Ident 
+            value is a REG_SZ data type in the registry, and greater than or equal checks on strings tend to not always be 
+            accurate (for example "10.0" is less than "2.0" when doing string comparisons). 
+      -->
+      <Custom Action="CA_ErrWrongWindowsVersion" Before="CostInitialize"><![CDATA[(NOT VersionNT >= 600 OR NOT MCEINSTALLVERSION OR NOT REGISTERMCEAPP) AND NOT Installed]]></Custom>
+
+      <Custom Action="CA_RegisterMceApp_Unregister_Install_Cmd" After="CostFinalize">
+        <![CDATA[NOT REMOVE]]>
+      </Custom>
+      <Custom Action="CA_RegisterMceApp_Unregister_Uninstall_Cmd" After="CA_RegisterMceApp_Unregister_Install_Cmd">
+        <![CDATA[REMOVE AND ($Registration.xml = 2)]]>
+      </Custom>
+      <Custom Action="CA_RegisterMceApp_Register_Cmd" After="CA_RegisterMceApp_Unregister_Uninstall_Cmd">
+        <![CDATA[NOT REMOVE]]>
+      </Custom>
+      <Custom Action="CA_RegisterMceApp_Rollback_Cmd" After="CA_RegisterMceApp_Register_Cmd">
+        <![CDATA[NOT REMOVE]]>
+      </Custom>
+
+      <!-- This unregistration custom action must occur before files are removed during uninstall of the -->
+      <!-- product because the custom action requires the registration XML file in order to run          -->
+      <!-- correctly. It is conditioned to only run during uninstall using the REMOVE condition.         -->
+      <Custom Action="CA_RegisterMceApp_Unregister_Uninstall" Before="RemoveFiles">
+        <![CDATA[REMOVE AND ($Registration.xml = 2)]]>
+      </Custom>
+
+      <!-- This sequence of actions is important. In order to allow the roll back custom action to run   -->
+      <!-- at the correct time in case the setup fails, it must be scheduled before the other actions    -->
+      <!-- because Windows Installer pushes each action onto a stack and then pops them off of the stack -->
+      <!-- in case of any failure in order to accomplish the roll back.                                  -->
+      <Custom Action="CA_RegisterMceApp_Rollback" After="InstallFiles">
+        <![CDATA[NOT REMOVE]]>
+      </Custom>
+      <Custom Action="CA_RegisterMceApp_Unregister_Install" After="CA_RegisterMceApp_Rollback">
+        <![CDATA[NOT REMOVE]]>
+      </Custom>
+      <Custom Action="CA_RegisterMceApp_Register" After="CA_RegisterMceApp_Unregister_Install">
+        <![CDATA[NOT REMOVE]]>
+      </Custom>
+    </InstallExecuteSequence>
+
+    <!-- The InstallUISequence table describes the order that actions will be executed when the user     -->
+    <!-- runs setup in full UI mode. Some actions must be scheduled in the UI and the execute sequence   -->
+    <!-- tables to ensure that they will run regardless of whether the user runs setup in full UI mode   -->
+    <!-- or in reduced UI or silent modes.                                                               -->
+    <InstallUISequence>
+      <Custom Action="CA_BlockOlderVersionInstall" After="FindRelatedProducts">
+        <![CDATA[NEWERVERSIONDETECTED]]>
+      </Custom>
+      <Custom Action="CA_ErrWrongWindowsVersion" Before="CostInitialize"><![CDATA[(NOT VersionNT >= 600 OR NOT MCEINSTALLVERSION OR NOT REGISTERMCEAPP) AND NOT Installed]]></Custom>
+    </InstallUISequence>
+
+    <!-- These properties define links that will appear in the Add/Remove Programs control panel when    -->
+    <!-- this product is installed on the system.                                                        -->
+    <Property Id="ARPHELPLINK" Value="!(loc.Property_ArpHelpLink)" />
+    <Property Id="ARPURLINFOABOUT" Value="!(loc.Property_ArpUrlInfoAbout)" />
+
+    <!-- This property defines the ALLUSERS property to be 1, which indicates that this product will be  -->
+    <!-- installed per-machine instead of per-user.                                                      -->
+    <Property Id="ALLUSERS">
+      <![CDATA[1]]>
+    </Property>
+
+    <!-- This property uses a registry locator to determine the version of Windows Media Center present  -->
+    <!-- on the system (if any). This registry-based version detection algorithm is documented in the    -->
+    <!-- Windows Media Center SDK for Windows Vista.                                                     -->
+    <Property Id="MCEINSTALLVERSION" Secure="yes">
+      <RegistrySearch Id="MceInstallRegKey" Root="HKLM" Key="SOFTWARE\Microsoft\Windows\CurrentVersion\Media Center" Name="Ident" Type="raw"/>
+    </Property>
+
+    <!-- This property uses an AppSearch to attempt to locate the file %windir\eHome\ehShell.exe  on the -->
+    <!-- system. If it is found, the property is set to the fully qualified path to this file, and this  -->
+    <!-- path is used to create a desktop shortcut to launch the application in Windows Media Center.    -->
+    <Property Id="EHSHELLEXE" Secure="yes">
+      <DirectorySearch Id="EhomeDirectoryEhShellExe" Path="[WindowsFolder]\ehome">
+        <FileSearch Id="EhShellExe" Name="ehShell.exe" MinVersion="6.0.0.0" />
+      </DirectorySearch>
+    </Property>
+    <!-- This property uses an AppSearch to attempt to locate the file %windir\eHome\RegisterMceApp.exe  -->
+    <!-- on the system. If it is found, the property is set to the fully qualified path to this file,    -->
+    <!-- and this path is used to call RegisterMceApp.exe in several custom actions listed above to      -->
+    <!-- register this application with Windows Media Center.                                            -->
+    <Property Id="REGISTERMCEAPP" Secure="yes">
+      <DirectorySearch Id="EhomeDirectoryRegisterMceAppExe" Path="[WindowsFolder]\ehome">
+        <FileSearch Id="RegisterMceAppExe" Name="RegisterMceApp.exe" />
+      </DirectorySearch>
+    </Property>
+
+    <!-- This property is used as the default installation directory, and the user can change this path  -->
+    <!-- during setup. The Id must be set to WIXUI_INSTALLDIR and the value must match the directory Id  -->
+    <!-- defined above that represents the root installation directory.                                  -->
+    <Property Id="WIXUI_INSTALLDIR" Value="APPROOTDIRECTORY"/>
+
+    <!-- This UIRef element specifies what WiXUI dialog set to use for the setup UI. This package uses   -->
+    <!-- the WixUI_InstallDir dialog set, which provides a welcome page, a license agreement page, a     -->
+    <!-- page to allow changing the installation path, an installation confirmation page, a progress     -->
+    <!-- page and a completion page. Other dialog sets are available in the WiX toolset and are          -->
+    <!-- described in more detail in the WiX documentation.                                              -->
+    <UIRef Id="WixUI_InstallDir"/>
+
+    <!-- In WiX v3.0, this variable is used to override the default license agreement text that is       -->
+    <!-- included in the WixUIExtension with a custom file.                                              -->
+    <WixVariable Id="WixUILicenseRtf" Value="License.rtf" />
+
+  </Product>
+</Wix>

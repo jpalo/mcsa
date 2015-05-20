@@ -1,0 +1,121 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003" ToolsVersion="4.0">
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProductVersion>9.0.30729</ProductVersion>
+    <SchemaVersion>2.0</SchemaVersion>
+    <ProjectGuid>{AAE53E35-BF26-4ACA-B060-21AFE80C0737}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>FBMCE</RootNamespace>
+    <AssemblyName>FBMCE</AssemblyName>
+    <SignAssembly>true</SignAssembly>
+    <AssemblyOriginatorKeyFile>Properties\FBMCE.snk</AssemblyOriginatorKeyFile>
+    <FileUpgradeFlags>
+    </FileUpgradeFlags>
+    <OldToolsVersion>3.5</OldToolsVersion>
+    <UpgradeBackupLocation>
+    </UpgradeBackupLocation>
+    <SccProjectName>SAK</SccProjectName>
+    <SccLocalPath>SAK</SccLocalPath>
+    <SccAuxPath>SAK</SccAuxPath>
+    <SccProvider>SAK</SccProvider>
+    <ApplicationIcon>
+    </ApplicationIcon>
+    <TargetFrameworkVersion>v2.0</TargetFrameworkVersion>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <FullyQualifiedOutputPath>$(MSBuildProjectDirectory)\bin\Debug</FullyQualifiedOutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <FullyQualifiedOutputPath>$(MSBuildProjectDirectory)\bin\Release</FullyQualifiedOutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+    <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="MediaState, Version=6.0.6000.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
+      <HintPath>Binaries\MediaState.dll</HintPath>
+      <SpecificVersion>False</SpecificVersion>
+      <Private>False</Private>
+    </Reference>
+    <Reference Include="Microsoft.MediaCenter, Version=6.0.6000.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="Microsoft.MediaCenter.UI, Version=6.0.6000.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL" />
+    <Reference Include="System" />
+    <Reference Include="System.configuration" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Security" />
+    <Reference Include="System.Web" />
+    <Reference Include="System.Windows.Forms" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Amazon\Query.cs" />
+    <Compile Include="Amazon\SignedRequestHelper.cs" />
+    <Compile Include="Code\Application.cs" />
+    <Compile Include="Code\Launch.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+    <None Include="DevUnInstall.cmd" />
+    <None Include="DevInstall.cmd" />
+    <None Include="Properties\FBMCE.snk" />
+    <None Include="Setup\Build.bat" />
+    <None Include="Setup\License.rtf" />
+    <None Include="Setup\Setup-en-us.wxl" />
+    <None Include="Setup\Setup.wxs" />
+    <None Include="Readme.htm" />
+  </ItemGroup>
+  <ItemGroup>
+    <Content Include="Binaries\MediaState.dll" />
+    <Content Include="Binaries\MemMapFile.dll" />
+    <Content Include="Binaries\Microsoft.MediaCenter.dll" />
+    <Content Include="Binaries\Microsoft.MediaCenter.UI.dll" />
+    <Content Include="Binaries\MSASState.dll" />
+    <Content Include="Binaries\Newtonsoft.Json.dll" />
+    <Content Include="FBMCE.ico" />
+    <Content Include="Registration.xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="CommonFunctions\CommonFunctions.csproj">
+      <Project>{9C6959F8-F962-4426-B177-B3CAF3B40247}</Project>
+      <Name>CommonFunctions</Name>
+    </ProjectReference>
+    <ProjectReference Include="Facebook\Facebook.csproj">
+      <Project>{2CA46CD1-7165-4ED6-8918-C8E8D71A1EFA}</Project>
+      <Name>Facebook</Name>
+      <Private>True</Private>
+    </ProjectReference>
+    <ProjectReference Include="Twitter\Twitter.csproj">
+      <Project>{4388D908-41E6-45A8-911F-3C298EE74DD7}</Project>
+      <Name>Twitter</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildBinPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+  <PropertyGroup>
+    <PostBuildEvent>"$(ProjectDir)Setup\Build.bat" $(ConfigurationName)</PostBuildEvent>
+  </PropertyGroup>
+</Project>

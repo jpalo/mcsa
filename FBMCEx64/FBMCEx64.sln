@@ -1,0 +1,100 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 11.00
+# Visual Studio 2010
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FBMCEx64 Background", "FBMCEx64 Background.csproj", "{AAE53E35-BF26-4ACA-B060-21AFE80C0737}"
+	ProjectSection(ProjectDependencies) = postProject
+		{FEB4BD0B-0A01-4A14-9C13-E4056E1740DC} = {FEB4BD0B-0A01-4A14-9C13-E4056E1740DC}
+	EndProjectSection
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Facebookx64", "Facebook\Facebookx64.csproj", "{2CA46CD1-7165-4ED6-8918-C8E8D71A1EFA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "FBMCEx64 Configuration", "FBMCE Configuration Tool\FBMCEx64 Configuration.csproj", "{FEB4BD0B-0A01-4A14-9C13-E4056E1740DC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AmazonTester", "AmazonTester\AmazonTester.csproj", "{465C5BA0-AF42-4722-8013-66ED5A1E46DA}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Twitter", "Twitter\Twitter.csproj", "{4388D908-41E6-45A8-911F-3C298EE74DD7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CommonFunctions", "CommonFunctions\CommonFunctions.csproj", "{9C6959F8-F962-4426-B177-B3CAF3B40247}"
+EndProject
+Global
+	GlobalSection(TeamFoundationVersionControl) = preSolution
+		SccNumberOfProjects = 7
+		SccEnterpriseProvider = {4CA58AB2-18FA-4F8D-95D4-32DDF27D184C}
+		SccTeamFoundationServer = http://tfs.di.tietoenator.com:8080/tfs/tfs.di
+		SccLocalPath0 = .
+		SccProjectUniqueName1 = Facebook\\Facebookx64.csproj
+		SccProjectName1 = Facebook
+		SccLocalPath1 = Facebook
+		SccProjectUniqueName2 = FBMCEx64\u0020Background.csproj
+		SccLocalPath2 = .
+		SccProjectUniqueName3 = AmazonTester\\AmazonTester.csproj
+		SccProjectName3 = AmazonTester
+		SccLocalPath3 = AmazonTester
+		SccProjectUniqueName4 = FBMCE\u0020Configuration\u0020Tool\\FBMCEx64\u0020Configuration.csproj
+		SccProjectName4 = FBMCE\u0020Configuration\u0020Tool
+		SccLocalPath4 = FBMCE\u0020Configuration\u0020Tool
+		SccProjectUniqueName5 = CommonFunctions\\CommonFunctions.csproj
+		SccProjectName5 = CommonFunctions
+		SccLocalPath5 = CommonFunctions
+		SccProjectUniqueName6 = Twitter\\Twitter.csproj
+		SccProjectName6 = Twitter
+		SccLocalPath6 = Twitter
+	EndGlobalSection
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Debug|x64 = Debug|x64
+		Release|Any CPU = Release|Any CPU
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AAE53E35-BF26-4ACA-B060-21AFE80C0737}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AAE53E35-BF26-4ACA-B060-21AFE80C0737}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AAE53E35-BF26-4ACA-B060-21AFE80C0737}.Debug|x64.ActiveCfg = Debug|x64
+		{AAE53E35-BF26-4ACA-B060-21AFE80C0737}.Debug|x64.Build.0 = Debug|x64
+		{AAE53E35-BF26-4ACA-B060-21AFE80C0737}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AAE53E35-BF26-4ACA-B060-21AFE80C0737}.Release|Any CPU.Build.0 = Release|Any CPU
+		{AAE53E35-BF26-4ACA-B060-21AFE80C0737}.Release|x64.ActiveCfg = Release|x64
+		{AAE53E35-BF26-4ACA-B060-21AFE80C0737}.Release|x64.Build.0 = Release|x64
+		{2CA46CD1-7165-4ED6-8918-C8E8D71A1EFA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2CA46CD1-7165-4ED6-8918-C8E8D71A1EFA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2CA46CD1-7165-4ED6-8918-C8E8D71A1EFA}.Debug|x64.ActiveCfg = Debug|x64
+		{2CA46CD1-7165-4ED6-8918-C8E8D71A1EFA}.Debug|x64.Build.0 = Debug|x64
+		{2CA46CD1-7165-4ED6-8918-C8E8D71A1EFA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2CA46CD1-7165-4ED6-8918-C8E8D71A1EFA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2CA46CD1-7165-4ED6-8918-C8E8D71A1EFA}.Release|x64.ActiveCfg = Release|x64
+		{2CA46CD1-7165-4ED6-8918-C8E8D71A1EFA}.Release|x64.Build.0 = Release|x64
+		{FEB4BD0B-0A01-4A14-9C13-E4056E1740DC}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{FEB4BD0B-0A01-4A14-9C13-E4056E1740DC}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{FEB4BD0B-0A01-4A14-9C13-E4056E1740DC}.Debug|x64.ActiveCfg = Debug|x64
+		{FEB4BD0B-0A01-4A14-9C13-E4056E1740DC}.Debug|x64.Build.0 = Debug|x64
+		{FEB4BD0B-0A01-4A14-9C13-E4056E1740DC}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{FEB4BD0B-0A01-4A14-9C13-E4056E1740DC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{FEB4BD0B-0A01-4A14-9C13-E4056E1740DC}.Release|x64.ActiveCfg = Release|x64
+		{FEB4BD0B-0A01-4A14-9C13-E4056E1740DC}.Release|x64.Build.0 = Release|x64
+		{465C5BA0-AF42-4722-8013-66ED5A1E46DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{465C5BA0-AF42-4722-8013-66ED5A1E46DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{465C5BA0-AF42-4722-8013-66ED5A1E46DA}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{465C5BA0-AF42-4722-8013-66ED5A1E46DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{465C5BA0-AF42-4722-8013-66ED5A1E46DA}.Release|Any CPU.Build.0 = Release|Any CPU
+		{465C5BA0-AF42-4722-8013-66ED5A1E46DA}.Release|x64.ActiveCfg = Release|Any CPU
+		{4388D908-41E6-45A8-911F-3C298EE74DD7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{4388D908-41E6-45A8-911F-3C298EE74DD7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{4388D908-41E6-45A8-911F-3C298EE74DD7}.Debug|x64.ActiveCfg = Debug|x64
+		{4388D908-41E6-45A8-911F-3C298EE74DD7}.Debug|x64.Build.0 = Debug|x64
+		{4388D908-41E6-45A8-911F-3C298EE74DD7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{4388D908-41E6-45A8-911F-3C298EE74DD7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{4388D908-41E6-45A8-911F-3C298EE74DD7}.Release|x64.ActiveCfg = Release|x64
+		{4388D908-41E6-45A8-911F-3C298EE74DD7}.Release|x64.Build.0 = Release|x64
+		{9C6959F8-F962-4426-B177-B3CAF3B40247}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9C6959F8-F962-4426-B177-B3CAF3B40247}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9C6959F8-F962-4426-B177-B3CAF3B40247}.Debug|x64.ActiveCfg = Debug|x64
+		{9C6959F8-F962-4426-B177-B3CAF3B40247}.Debug|x64.Build.0 = Debug|x64
+		{9C6959F8-F962-4426-B177-B3CAF3B40247}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9C6959F8-F962-4426-B177-B3CAF3B40247}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9C6959F8-F962-4426-B177-B3CAF3B40247}.Release|x64.ActiveCfg = Release|x64
+		{9C6959F8-F962-4426-B177-B3CAF3B40247}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

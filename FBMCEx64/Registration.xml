@@ -1,0 +1,9 @@
+﻿<application title="FBMCE" id="{F26EE6AC-0C06-473d-9628-7C505F60D611}">
+  <entrypoint id="{3A0B9285-4FB1-4cc5-A069-23C12CEA6038}"
+				addin="FBMCE.MyAddIn, FBMCE,Culture=Neutral,Version=0.6.8.0,PublicKeyToken=76ba1050e5f3384a"
+				title="FBMCE"
+				description="Media Center Status Application"
+        context="">
+    <category category="Background"/>
+  </entrypoint>
+</application>
